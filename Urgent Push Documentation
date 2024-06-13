@@ -1,11 +1,10 @@
-    
-   UrgentPush By Jamie Needham
-    # Version 1.55 6/12/24 
+  UrgentPush By Jamie Needham
+    # Version 1.56 OAUTH2 edition 6/13/24
       (Documentation)
       
     Required Dependencies: 
         - Run: pip install oauthlib requests requests-oauthlib
-        - You will also need to install: Smtplib, ET, Mime
+        - You will also need to install: Smtplib, ET, Mime, pytz
         - Python 3.11 (Tested and working)
         - Urgent Messaging System by Vayusphere
         - Email address
