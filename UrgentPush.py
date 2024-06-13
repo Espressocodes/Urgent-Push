@@ -22,7 +22,7 @@ def convert_utc_to_central(utc_time_str): ## YOU WILL NEED TO MODIFY THIS TO YOU
     central_time = utc_time.astimezone(central_zone)
     
     # Return formatted time
-    return central_time.strftime('%Y%m%d%H%M%S')
+    return central_time.strftime('%m-%d-%y %H:%M:%S') ## MODIFY FORMAT TO YOUR LIKING #
 
 def convert_xml_to_email(xml_file, use_oauth2=False): ## CHANGE THIS TO TRUE TO USE OAUTH2 ##
     try:
@@ -36,11 +36,11 @@ def convert_xml_to_email(xml_file, use_oauth2=False): ## CHANGE THIS TO TRUE TO 
         from_address = root.find('from').text
         message_body = root.find('body').text
         
-        # Convert UTC time to Central Time ## YOU WILL NEED TO MODIFY THIS TO YOUR TIMEZONE ##
+        # Convert UTC time to Central Time ## CHANGE TO YOUR TIMEZONE ##
         central_time_str = convert_utc_to_central(time_sent_str)
         
-        date_sent = central_time_str[:8]  # Extracting only the date part
-        time_sent = central_time_str[8:14]  # Extracting only the time part
+        # Extract date and time parts from Central Time
+        date_sent, time_sent = central_time_str.split(' ')  
 
         # Format email message as HTML
         formatted_message = f"""
