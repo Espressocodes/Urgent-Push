@@ -57,7 +57,8 @@ If you do wish to enable and use Oauth2, the script has an option for you to do 
         
   Where you should put your script: 
       
-      Doesn't matter, whatever's easiest to launch with. I use a program called terminus to launch from a code I pre-wrote since I got tired of typing the file location over and over. 
+      Doesn't matter, whatever's easiest to launch with. 
+      I use a program called terminus to launch from a code I pre-wrote since I got tired of typing the file location over and over. 
         
   The command prompt is blank and sitting on an empty response:
        
