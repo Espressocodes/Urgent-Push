@@ -2,30 +2,30 @@
     # Version 1.55 6/12/24 
       (Documentation)
       
-    Required Dependencies: 
+   Required Dependencies: 
         - Run: pip install oauthlib requests requests-oauthlib
         - You will also need to install: Smtplib, ET, Mime
         - Python 3.11 (Tested and working)
         - Urgent Messaging System by Vayusphere
         - Email address
         
-    First off, what this program is for:
+   First off, what this program is for:
         - Any PC instance of the VAYUSPHERE client Urgent Message system
         - Forwarding the Urgent Message content in a formatted format to a relevant email
         - Creating an environment where the message is quickly able to be seen while AFK.
         
-    Notations about the project:
+   Notations about the project:
         - Developed for NBC UM Client Version 3.0.1.80 on Windows 11
         - Script executed and developed with [Python 3.11] x64 on Windows 11
         - Created entirely for mass-notification of time-sensitive broadcast alerts
         - Designed for readability and ease-of change as content evolves.
         - Should work for all UM systems designed with backend XML caches.
         
-    Everything you will have to change is outlined in the python script itself. I HIGHLY recommed usng Notepad++ for editing with the Python Language selected. It will make reading the document much easier. There are very few values required to change. You will likely struggle more will getting your email password to take with 2 factor. From experience.
+Everything you will have to change is outlined in the python script itself. I HIGHLY recommed usng Notepad++ for editing with the Python Language selected. It will make reading the document much easier. There are very few values required to change. You will likely struggle more will getting your email password to take with 2 factor. From experience.
     
-    BOTH Urgent messenger and Command Prompt (or whatever script execution program you are using) will HAVE to remain running to keep the script online. Once they close, the function goes offline. It will only look for new content once a minute, however, and is extremely low-resource. 
+BOTH Urgent messenger and Command Prompt (or whatever script execution program you are using) will HAVE to remain running to keep the script online. Once they close, the function goes offline. It will only look for new content once a minute, however, and is extremely low-resource. 
         
-    When the script is edited with your info:
+  When the script is edited with your info:
         - Ensure the file is saved as FILENAME.py
         - Launch command prompt or your execution program of choice
         - Use: "cd filelocation" (EG: cd C:\Pythonscript\) and hit return.
@@ -33,45 +33,46 @@
         - You should start seeing "Email has been sent" if set up correct. If not, it will reference an error with a line.
             - Find the line with the error. This could be login or otherwise. 
         
-        As a note, it will try and send every single file in the folder unless it is a weeklyheartbeat. Reduce the number of messages first to 2-3 for testing to prevent spam. I recommend linking only your own email and sending only to yourself for testing reasons at first.
+As a note, it will try and send every single file in the folder unless it is a weeklyheartbeat. Reduce the number of messages first to 2-3 for testing to prevent spam. I recommend linking only your own email and sending only to yourself for testing reasons at first.
      
-    There is an option for Oauth2 in the script, however it will require a user to get:
+  There is an option for Oauth2 in the script, however it will require a user to get:
         - An Oauth2 Token (URL)
         - Client ID
         - Client Secret
-    I cannot advise how best to approach this, as you must be an administrator on the network your email is a part of or an application 
+I cannot advise how best to approach this, as you must be an administrator on the network your email is a part of or an application 
 developer to be issued many of these things. In the case of corporate emails, you will likely not have access to this. 
 
-    If you do wish to enable and use Oauth2, the script has an option for you to do so by setting line 90 to "True." If not, you may need to issue an app-specific password via your security settings. 
+If you do wish to enable and use Oauth2, the script has an option for you to do so by setting line 90 to "True." If not, you may need to issue an app-specific password via your security settings. 
 
 {Troubleshooting}
 
-    Where the XML files are usually stored:
-        As an NBC affiliate I can only speak for that folder, but they're typically under the C: drive directly. As an example:
-            - C:\NBCUrgentMessaging\UMMessages\Myusernamefortheservice\stationalerts
-        There are a few other folders in the same location able to be safely ignored. We only need the ones with XML data.
+  Where the XML files are usually stored:
+      As an NBC affiliate I can only speak for that folder, but they're typically under the C: drive directly. As an example:
+           - C:\NBCUrgentMessaging\UMMessages\Myusernamefortheservice\stationalerts
+       There are a few other folders in the same location able to be safely ignored. We only need the ones with XML data.
         
-    Where you should put your script: 
-        Doesn't matter, whatever's easiest to launch with. I use a program called terminus to launch from a code I pre-wrote since I got tired of typing the file location over and over. 
+  Where you should put your script: 
+       Doesn't matter, whatever's easiest to launch with. I use a program called terminus to launch from a code I pre-wrote since I got tired of typing the file location over and over. 
         
-    The command prompt is blank and sitting on an empty response:
+   The command prompt is blank and sitting on an empty response:
         - Check to see if you have any other command prompts open. 
         - Check the file to ensure you've saved all your changes.
         - Ensure there are XML files in the alert folder. Copy and paste one to push a new one.
         - Ensure you have all of the dependencies.
         - Restart your computer.
         
-    Guidance on the Application-Specific Passwords for SMTP:
+   Guidance on the Application-Specific Passwords for SMTP:
       (smtp_password = 'Mysupersecretpassword')
-    Most email clients have the option to issue a less-secure password for single-application use. As an example; under Microsoft > Account > Security > Account we can select "Manage how I sign in" and scroll down to "App Passwords." This is where we can create a password specifically for the script that will bypass any 2-factor authentication and will be used in-place of our usual login password. 
+Most email clients have the option to issue a less-secure password for single-application use. As an example; under Microsoft > Account > Security > Account we can select "Manage how I sign in" and scroll down to "App Passwords." This is where we can create a password specifically for the script that will bypass any 2-factor authentication and will be used in-place of our usual login password. 
     
-    It isn't only Microsoft that allows this option. Google's is a bit more hidden, however and required a search.
+  It isn't only Microsoft that allows this option. Google's is a bit more hidden, however and required a search.
         - https://myaccount.google.com/apppasswords
         - Add a name
         - Create an application password
         - Use this in place of 'Mysupersecretpassword'
         
-    You may need to modify your SMTP server address or port. Below are the most used ones:
+  You may need to modify your SMTP server address or port. Below are the most used ones:
+      
         # Gmail (Google)
         SMTP Server: smtp.gmail.com
         Port: 587 (TLS), 465 (SSL)
