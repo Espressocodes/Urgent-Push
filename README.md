@@ -2,19 +2,19 @@
     # Version 1.55 6/12/24 
       (Documentation)
       
-   Required Dependencies: 
+    Required Dependencies:
         - Run: pip install oauthlib requests requests-oauthlib
         - You will also need to install: Smtplib, ET, Mime
         - Python 3.11 (Tested and working)
         - Urgent Messaging System by Vayusphere
         - Email address
         
-   First off, what this program is for:
+     First off, what this program is for:
         - Any PC instance of the VAYUSPHERE client Urgent Message system
         - Forwarding the Urgent Message content in a formatted format to a relevant email
         - Creating an environment where the message is quickly able to be seen while AFK.
         
-   Notations about the project:
+     Notations about the project:
         - Developed for NBC UM Client Version 3.0.1.80 on Windows 11
         - Script executed and developed with [Python 3.11] x64 on Windows 11
         - Created entirely for mass-notification of time-sensitive broadcast alerts
@@ -25,7 +25,7 @@ Everything you will have to change is outlined in the python script itself. I HI
     
 BOTH Urgent messenger and Command Prompt (or whatever script execution program you are using) will HAVE to remain running to keep the script online. Once they close, the function goes offline. It will only look for new content once a minute, however, and is extremely low-resource. 
         
-  When the script is edited with your info:
+    When the script is edited with your info:
         - Ensure the file is saved as FILENAME.py
         - Launch command prompt or your execution program of choice
         - Use: "cd filelocation" (EG: cd C:\Pythonscript\) and hit return.
@@ -35,7 +35,7 @@ BOTH Urgent messenger and Command Prompt (or whatever script execution program y
         
 As a note, it will try and send every single file in the folder unless it is a weeklyheartbeat. Reduce the number of messages first to 2-3 for testing to prevent spam. I recommend linking only your own email and sending only to yourself for testing reasons at first.
      
-  There is an option for Oauth2 in the script, however it will require a user to get:
+    There is an option for Oauth2 in the script, however it will require a user to get:
         - An Oauth2 Token (URL)
         - Client ID
         - Client Secret
@@ -46,15 +46,15 @@ If you do wish to enable and use Oauth2, the script has an option for you to do 
 
 {Troubleshooting}
 
-  Where the XML files are usually stored:
+    Where the XML files are usually stored:
       As an NBC affiliate I can only speak for that folder, but they're typically under the C: drive directly. As an example:
            - C:\NBCUrgentMessaging\UMMessages\Myusernamefortheservice\stationalerts
        There are a few other folders in the same location able to be safely ignored. We only need the ones with XML data.
         
-  Where you should put your script: 
+    Where you should put your script: 
        Doesn't matter, whatever's easiest to launch with. I use a program called terminus to launch from a code I pre-wrote since I got tired of typing the file location over and over. 
         
-   The command prompt is blank and sitting on an empty response:
+     The command prompt is blank and sitting on an empty response:
         - Check to see if you have any other command prompts open. 
         - Check the file to ensure you've saved all your changes.
         - Ensure there are XML files in the alert folder. Copy and paste one to push a new one.
