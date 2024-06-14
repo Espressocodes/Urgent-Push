@@ -43,14 +43,9 @@ jobs:
     - name: Change folder name
       id: foldername
       run: |
-        if [ "$BRANCH_NAME" == "main" ]; then
-          version=$(egrep -oP '"version": "\K(\d+\.?)*)')
-          foldername=urgentpush-v$version-${{ matrix.os }}
-          echo "::set-output name=type::release"
-        else
-          foldername=urgentpush-${{needs.test.outputs.build_time}}-${{ matrix.os }}
-          echo "::set-output name=type::development"
-        fi
+        version=$(egrep -oP '"version": "\K(\d+\.?)*)')
+        foldername=urgentpush-v$version-${{ matrix.os }}
+        echo "::set-output name=type::release"
         mv dist/ $foldername
         echo "::set-output name=foldername::$foldername"
       shell: bash
