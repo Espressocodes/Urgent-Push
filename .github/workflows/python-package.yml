@@ -43,7 +43,7 @@ jobs:
     - name: Change folder name
       id: foldername
       run: |
-        version=$(egrep -o '"version": "\K(\d+\.?)*)')
+        version=$(cat version.txt)
         foldername=urgentpush-v$version-${{ matrix.os }}
         echo "::set-output name=type::release"
         mv dist/ $foldername
