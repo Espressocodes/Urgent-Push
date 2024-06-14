@@ -1,0 +1,94 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Urgent Push
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            asset_name: urgentpush-win64-${{ github.run_number }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.11"
+        cache: 'pipenv'
+        cache-dependency-path: '**/Pipfile'
+
+    
+    - name: Build package
+      run: |
+        python -m pip install -U pip pipenv
+        pipenv install -d pyinstaller
+        pipenv run pyinstaller -y urgentpush.spec
+
+    - name: Copy readme files
+      run: cp *.md dist/
+      shell: bash   
+
+    - uses: nelonoel/branch-name@v1.0.1
+    - name: Change folder name
+      id: foldername
+      run: |
+        if [ "$BRANCH_NAME" == "main" ]; then
+          version=$(egrep -oP '"version": "\K(\d+\.?)*)')
+          foldername=urgentpush-v$version-${{ matrix.os }}
+          echo "::set-output name=type::release"
+        else
+          foldername=urgentpush-${{needs.test.outputs.build_time}}-${{ matrix.os }}
+          echo "::set-output name=type::development"
+        fi
+        mv dist/ $foldername
+        echo "::set-output name=foldername::$foldername"
+      shell: bash
+
+    - uses: vimtor/action-zip@v1
+      with:
+        files: ${{ steps.foldername.outputs.foldername }}
+        recursive: false
+        dest: ${{ steps.foldername.outputs.foldername }}.zip
+          
+    - name: Set file extension
+      id: set_extension
+      run: |
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            echo "::set-output name=extension::zip"
+          else
+            echo "::set-output name=extension::tgz"
+          fi
+      shell: bash
+
+    # maybe upload this as a release here?
+    # - id: 'auth'
+    #   uses: 'google-github-actions/auth@v0'
+    #   with:
+    #     credentials_json: '${{ secrets.GCS_SERVICE_ACCT }}'
+        
+    # - id: 'upload-file'
+    #   uses: 'google-github-actions/upload-cloud-storage@v0'
+    #   with:
+    #     path: ${{ steps.foldername.outputs.foldername }}.${{ steps.set_extension.outputs.extension }}
+    #     destination: 'downloads.chhopsky.tv/updatethestream/${{ steps.foldername.outputs.type }}/'
+
+  # use something like this to trigger a github pages rebuild
+  # publish:
+  #   needs: [build, test]
+  #   runs-on: ubuntu-latest
+  #   steps:  
+  #   - name: Trigger rebuild of web site
+  #     run: |
+  #       curl -XPOST -u "${{ secrets.GH_USERNAME}}:${{secrets.GH_PAT}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/chhopsky/urgentpush-readthedocs/dispatches --data '{"event_type": "build_application"}'
+  #     shell: bash
