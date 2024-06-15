@@ -1,0 +1,11 @@
+{ 
+    "directory" : "C:/FILELOCATION/FILESUBLOCATION/DEEPERFOLDER",
+    "client_id" : "OAUTH2 CLIENT ID",
+    "client_secret" : "OAUTH2 CLIENT SECRET",
+    "token_url" : "OAUTH2 TOKEN URL",
+    "smtp_password" : "Mysupersecretpassword",
+    "smtp_server" : "smtp.SERVERADDRESS.com",
+    "smtp_port" : 587,
+    "smtp_username" : "Sender@emailhost.com",
+    "recipient" : "your@email.com"
+}

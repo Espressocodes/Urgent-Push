@@ -4,9 +4,11 @@
       
    Required Dependencies:
     
-        - Run: pip install oauthlib requests requests-oauthlib
-        - You will also need to install: Smtplib, ET, Mime
         - Python 3.11 (Tested and working)
+        - pipenv (pip install pipenv)
+          - pipenv shell
+          - pipenv lock
+          - pipenv sync
         - Urgent Messaging System by Vayusphere
         - Email address
         
@@ -24,7 +26,7 @@
         - Designed for readability and ease-of change as content evolves.
         - Should work for all UM systems designed with backend XML caches.
         
-Everything you will have to change is outlined in the python script itself. I HIGHLY recommed usng Notepad++ for editing with the Python Language selected. It will make reading the document much easier. There are very few values required to change. You will likely struggle more will getting your email password to take with 2 factor. From experience.
+You will need to add your configuration to the config.json file. Everything you will have to change is outlined in the python script itself. I HIGHLY recommed usng Notepad++ for editing with the Python Language selected. It will make reading the document much easier. There are very few values required to change. You will likely struggle more will getting your email password to take with 2 factor. From experience.
     
 BOTH Urgent messenger and Command Prompt (or whatever script execution program you are using) will HAVE to remain running to keep the script online. Once they close, the function goes offline. It will only look for new content once a minute, however, and is extremely low-resource. 
         
@@ -32,7 +34,7 @@ BOTH Urgent messenger and Command Prompt (or whatever script execution program y
         - Ensure the file is saved as FILENAME.py
         - Launch command prompt or your execution program of choice
         - Use: "cd filelocation" (EG: cd C:\Pythonscript\) and hit return.
-        - Use: "python FILENAME.py" (EG: python Urgent.py) and hit return.
+        - Use: "pipenv run python FILENAME.py" (EG: Urgent.py) and hit return.
         - You should start seeing "Email has been sent" if set up correct. If not, it will reference an error with a line.
             - Find the line with the error. This could be login or otherwise. 
         

@@ -1,12 +1,16 @@
+
 import os
 import time
 import smtplib
 import xml.etree.ElementTree as ET
+import json
+import logging
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
+from pathlib import Path
 import pytz
 
 def convert_utc_to_central(utc_time_str): ## YOU WILL NEED TO MODIFY THIS TO YOUR TIMEZONE ##
@@ -58,22 +62,22 @@ def convert_xml_to_email(xml_file, use_oauth2=False): ## CHANGE THIS TO TRUE TO 
         """
 
         # EMAIL SEND. FILL OUT RECIPIENT BELOW.
-        send_email(from_address, 'Recipient@emailhost.com', subject, formatted_message, use_oauth2)
+        send_email(from_address, config.get("recipient"), subject, formatted_message, use_oauth2)
 
     except Exception as e:
         print(f"An error occurred while formatting or sending the email: {e}")
 
 def send_email(sender, recipient, subject, body, use_oauth2):
     try:
-        smtp_server = 'smtp.SERVERADDRESS.com' ## YOU WILL NEED THE SMTP SERVER. SOME TYPICAL ONES: smtp.office365.com (Office 365), smtp.mail.me.com (iCloud), smtp.gmail.com (Gmail), smtp-mail.outlook.com (Outlook)...etc ##
-        smtp_port = 587 ## MOST SERVERS USE 25, 465, 587, AND 2525 ##
-        smtp_username = 'Sender@emailhost.com' ## YOUR EMAIL, AKA YOUR LOGIN FOR THIS SERVICE. ##
+        smtp_server = config.get("smtp_server") ## YOU WILL NEED THE SMTP SERVER. SOME TYPICAL ONES: smtp.office365.com (Office 365), smtp.mail.me.com (iCloud), smtp.gmail.com (Gmail), smtp-mail.outlook.com (Outlook)...etc ##
+        smtp_port = config.get("smtp_port", 587) ## MOST SERVERS USE 25, 465, 587, AND 2525 
+        smtp_username = config.get("smtp_username") ## YOUR EMAIL, AKA YOUR LOGIN FOR THIS SERVICE. ##
 
         if use_oauth2:
             # OAuth2 CONFIG. ONLY FILL OUT IF USING OAUTH2
-            client_id = 'OAUTH2 CLIENT ID'
-            client_secret = 'OAUTH2 CLIENT SECRET'
-            token_url = 'OAUTH2 TOKEN URL'
+            client_id = config.get("client_id")
+            client_secret = config.get("client_secret")
+            token_url = config.get("token_url")
 
             # OAuth2 token Fetch
             client = BackendApplicationClient(client_id=client_id)
@@ -83,7 +87,7 @@ def send_email(sender, recipient, subject, body, use_oauth2):
             # FILL OUT OAUTH2 ACCESS TOKEN BELOW
             auth = lambda: (smtp_username, token['access_token'])
         else:
-            smtp_password = 'Mysupersecretpassword' ## IF NOT USING OAUTH2, SOME SERVICES REQUIRE APP-SPECIFIC PASSWORDS. SEE DOCUMENTATION ##
+            smtp_password = config.get("smtp_password") ## IF NOT USING OAUTH2, SOME SERVICES REQUIRE APP-SPECIFIC PASSWORDS. SEE DOCUMENTATION ##
             auth = lambda: (smtp_username, smtp_password)
 
         msg = MIMEMultipart()
@@ -102,30 +106,51 @@ def send_email(sender, recipient, subject, body, use_oauth2):
     except Exception as e:
         print(f"An error occurred while sending the email: {e}")
 
-## CHANGE DIRECTORY LOCATION TO URGENT MESSAING PROGRAM FOLDER > MESSAGING > LOGIN NAME > ALERTS FOLDER. XML FILES SHOULD BE IN HERE. ##
-directory = r'C:\FILELOCATION\FILESUBLOCATION\DEEPERFOLDER' 
+if __name__ == "__main__":
+    bundle_dir = Path(__file__).parent.resolve()
+    exec_dir = bundle_dir
+    in_bundle = False
+    config = {}
+    LOGLEVEL = "DEBUG"
+    with open('config.json') as f:
+        config = json.load(f)
 
-# Track files processed (this doesnt always work, sorry)
-processed_files = set()
+    if not os.path.isdir(exec_dir / "logs"):
+        os.mkdir(exec_dir / "logs")
+    logger = logging.getLogger("urgentpush_logs")
+    logging.basicConfig(filename=exec_dir/"logs/urgentpush.log", filemode='a', level=LOGLEVEL, format='%(name)s - %(levelname)s - %(message)s')
 
-# Toggleable OAuth2
-use_oauth2 = False  ## CHANGE THIS TO TRUE IF USING OAUTH2 ##
+    logger.info("====init====")
+ 
+    ## CHANGE DIRECTORY LOCATION TO URGENT MESSAING PROGRAM FOLDER > MESSAGING > LOGIN NAME > ALERTS FOLDER. XML FILES SHOULD BE IN HERE. ##
+    directory = config.get("directory")
 
-while True:
-    # GET FULL LIST OF XML FILES AND EXCLUDE ALL WEEKLY HEARTBEAT MESSAGES. IF YOU WANT TO TURN TEST MESSAGES BACK ON, RENOVE: "and not file.startswith('weeklyhb')" ##
-    xml_files = [file for file in os.listdir(directory) if file.endswith('.xml') and not file.startswith('weeklyhb')]
+    # Track files processed (this doesnt always work, sorry)
+    processed_files = set()
 
-    # Check for new files
-    new_files = [file for file in xml_files if file not in processed_files]
+    # Toggleable OAuth2
+    use_oauth2 = False  ## CHANGE THIS TO TRUE IF USING OAUTH2 ##
 
-    # Process new files
-    for file in new_files:
-        xml_file_path = os.path.join(directory, file)
-        convert_xml_to_email(xml_file_path, use_oauth2)
-        processed_files.add(file)
+    while True:
+        # GET FULL LIST OF XML FILES AND EXCLUDE ALL WEEKLY HEARTBEAT MESSAGES. IF YOU WANT TO TURN TEST MESSAGES BACK ON, RENOVE: "and not file.startswith('weeklyhb')" ##
+        try: 
+            xml_files = [file for file in os.listdir(directory) if file.endswith('.xml') and not file.startswith('weeklyhb')]
+        except Exception as e:
+            print(f"Could not open configured directory! Please set it correctly in config.json\n{e}")
+            logging.error(e)
+            quit()
 
-    # 1m sleep before recheck
-    time.sleep(60)
-    
-    # UrgentPush By Jamie Needham
-    # Version 1.56 OAUTH2 edition 6/13/24
+        # Check for new files
+        new_files = [file for file in xml_files if file not in processed_files]
+
+        # Process new files
+        for file in new_files:
+            xml_file_path = os.path.join(directory, file)
+            convert_xml_to_email(xml_file_path, use_oauth2)
+            processed_files.add(file)
+
+        # 1m sleep before recheck
+        time.sleep(60)
+        
+        # UrgentPush By Jamie Needham
+        # Version 1.56 OAUTH2 edition 6/13/24
