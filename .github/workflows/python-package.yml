@@ -36,7 +36,13 @@ jobs:
         pipenv run pyinstaller -y urgentpush.spec
 
     - name: Copy readme files
-      run: cp *.md dist/
+      run: | 
+        cp *.md dist/
+        cp version.txt dist/
+        cp config.json dist/
+        cp "Urgent Push Documentation" dist/
+        cp LICENSE dist/
+
       shell: bash   
 
     - uses: nelonoel/branch-name@v1.0.1
