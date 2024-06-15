@@ -93,7 +93,7 @@ def send_email(sender, recipient, subject, body, use_oauth2):
         msg = MIMEMultipart()
         msg['From'] = smtp_username
         msg['To'] = recipient
-        msg['Subject'] = f'URGENT: {subject}'
+        msg['Subject'] = f'URGENT: {subject}' ## CHANGE TO DESIRED SUBJECT ##
 
         msg.attach(MIMEText(body, 'html'))
 
