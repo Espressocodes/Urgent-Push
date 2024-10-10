@@ -121,14 +121,14 @@ def save_processed_files(log_file, processed_files):
     with open(log_file, 'w') as f:
         f.write('\n'.join(processed_files))
         
-if __name__ == "__main__":
-    bundle_dir = Path(__file__).parent.resolve()
-    exec_dir = bundle_dir
-    in_bundle = False
-    config = {}
-    LOGLEVEL = "DEBUG"
-    with open('config.json') as f:
-        config = json.load(f)
+    if __name__ == "__main__":
+        bundle_dir = Path(__file__).parent.resolve()
+        exec_dir = bundle_dir
+        in_bundle = False
+        config = {}
+        LOGLEVEL = "DEBUG"
+        with open('config.json') as f:
+            config = json.load(f)
 
     if not os.path.isdir(exec_dir / "logs"):
         os.mkdir(exec_dir / "logs")
