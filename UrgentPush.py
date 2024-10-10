@@ -125,32 +125,51 @@ if __name__ == "__main__":
     ## CHANGE DIRECTORY LOCATION TO URGENT MESSAING PROGRAM FOLDER > MESSAGING > LOGIN NAME > ALERTS FOLDER. XML FILES SHOULD BE IN HERE. ##
     directory = config.get("directory")
 
-    # Track files processed (this doesnt always work, sorry)
+    # Track files processed 
     processed_files = set()
 
     # Toggleable OAuth2
     use_oauth2 = False  ## CHANGE THIS TO TRUE IF USING OAUTH2 ##
 
-    while True:
-        # GET FULL LIST OF XML FILES AND EXCLUDE ALL WEEKLY HEARTBEAT MESSAGES. IF YOU WANT TO TURN TEST MESSAGES BACK ON, RENOVE: "and not file.startswith('weeklyhb')" ##
-        try: 
-            xml_files = [file for file in os.listdir(directory) if file.endswith('.xml') and not file.startswith('weeklyhb')]
-        except Exception as e:
-            print(f"Could not open configured directory! Please set it correctly in config.json\n{e}")
-            logging.error(e)
-            quit()
+# Directory to monitor
+directory = r'C:\NBCUrgentMessaging\UMMessages\---' #INSERT YOUR FILE LOCATION FOR UMALERTS 
 
-        # Check for new files
-        new_files = [file for file in xml_files if file not in processed_files]
+# Path to log file
+log_file = os.path.join(directory, 'processed_files_log.txt') #THIS LOG FILE NAME CAN BE CHANGED. THIS IS TO TRACK WHAT HAS ALREADY SENT.
 
-        # Process new files
-        for file in new_files:
-            xml_file_path = os.path.join(directory, file)
-            convert_xml_to_email(xml_file_path, use_oauth2)
-            processed_files.add(file)
+# Load processed files from log file
+def load_processed_files(log_file):
+    if os.path.exists(log_file):
+        with open(log_file, 'r') as f:
+            return set(f.read().splitlines())
+    return set()
 
-        # 1m sleep before recheck
-        time.sleep(60)
+# Save processed files to log file
+def save_processed_files(log_file, processed_files):
+    with open(log_file, 'w') as f:
+        f.write('\n'.join(processed_files))
+
+# Load processed files from log
+processed_files = load_processed_files(log_file)
+
+while True:
+    # Get list of XML files in directory
+    xml_files = [file for file in os.listdir(directory) if file.endswith('.xml') and not file.startswith('weeklyhb')]
+
+    # Check for new files
+    new_files = [file for file in xml_files if file not in processed_files]
+
+    # Process new files
+    for file in new_files:
+        xml_file_path = os.path.join(directory, file)
+        convert_xml_to_email(xml_file_path)
+        processed_files.add(file)
+
+    # Save processed files to log file
+    save_processed_files(log_file, processed_files)
+
+    # Sleep for 1 minute before checking again
+    time.sleep(60) #THIS CAN BE CHANGED IF YOU WANT FEWER OR MORE CHECKS OF THE CLIENT.
         
         # UrgentPush By Jamie Needham
-        # Version 1.56 OAUTH2 edition 6/13/24
+        # Version 1.57 Logging/Entra 10/10/2024
