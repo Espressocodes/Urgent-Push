@@ -169,4 +169,4 @@ while True:
     time.sleep(60) #THIS CAN BE CHANGED IF YOU WANT FEWER OR MORE CHECKS OF THE CLIENT.
         
         # UrgentPush By Jamie Needham
-        # Version 1.57 Logging/Entra 10/10/2024
+        # Version 1.59 Logging/Entra 10/10/2024
