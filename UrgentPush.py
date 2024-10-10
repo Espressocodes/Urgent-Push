@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     logger.info("====init====")
  
-    ## CHANGE DIRECTORY LOCATION TO URGENT MESSAING PROGRAM FOLDER > MESSAGING > LOGIN NAME > ALERTS FOLDER. XML FILES SHOULD BE IN HERE. ##
+    ## CHANGE DIRECTORY LOCATION IN CONFIG TO URGENT MESSAING PROGRAM FOLDER > MESSAGING > LOGIN NAME > ALERTS FOLDER. XML FILES SHOULD BE IN HERE. ##
     directory = config.get("directory")
 
     # Track files processed 
@@ -130,9 +130,6 @@ if __name__ == "__main__":
 
     # Toggleable OAuth2
     use_oauth2 = False  ## CHANGE THIS TO TRUE IF USING OAUTH2 ##
-
-# Directory to monitor
-directory = r'C:\NBCUrgentMessaging\UMMessages\---' #INSERT YOUR FILE LOCATION FOR UMALERTS 
 
 # Path to log file
 log_file = os.path.join(directory, 'processed_files_log.txt') #THIS LOG FILE NAME CAN BE CHANGED. THIS IS TO TRACK WHAT HAS ALREADY SENT.
