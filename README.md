@@ -1,5 +1,5 @@
   UrgentPush By Jamie Needham
-    # Version 1.56 6/13/24 
+    # Version 1.59 10/10/24 
       (Documentation)
       
    Required Dependencies:
@@ -10,6 +10,7 @@
           - pipenv lock
           - pipenv sync
         - Urgent Messaging System by Vayusphere
+        - Entra or other OAUTH2 Code Grant if using OAUTH2
         - Email address
         
    First off, what this program is for:
@@ -25,6 +26,7 @@
         - Created entirely for mass-notification of time-sensitive broadcast alerts
         - Designed for readability and ease-of change as content evolves.
         - Should work for all UM systems designed with backend XML caches.
+        - A LOG file will be created and written to notate sent items, so restarting the script should NOT resent content anymore.
         
 You will need to add your configuration to the config.json file. Everything you will have to change is outlined in the python script itself. I HIGHLY recommed usng Notepad++ for editing with the Python Language selected. It will make reading the document much easier. There are very few values required to change. You will likely struggle more will getting your email password to take with 2 factor. From experience.
     
@@ -44,6 +46,8 @@ As a note, it will try and send every single file in the folder unless it is a w
         - An Oauth2 Token (URL)
         - Client ID
         - Client Secret
+        - Microsoft Entra (If using MS) application access, and granting the SEND and OFFLINE permissions.
+        
 I cannot advise how best to approach this, as you must be an administrator on the network your email is a part of or an application 
 developer to be issued many of these things. In the case of corporate emails, you will likely not have access to this. 
 
@@ -74,7 +78,7 @@ If you do wish to enable and use Oauth2, the script has an option for you to do 
          
       (smtp_password = 'Mysupersecretpassword')
       
-Most email clients have the option to issue a less-secure password for single-application use. As an example; under Microsoft > Account > Security > Account we can select "Manage how I sign in" and scroll down to "App Passwords." This is where we can create a password specifically for the script that will bypass any 2-factor authentication and will be used in-place of our usual login password. 
+Most email clients have the option to issue a less-secure password for single-application use. As an example; under Microsoft > Account > Security > Account we can select "Manage how I sign in" and scroll down to "App Passwords." (This is depreciated as of SEPTEMBER 2024) This is where we can create a password specifically for the script that will bypass any 2-factor authentication and will be used in-place of our usual login password. 
     
   It isn't only Microsoft that allows this option. Google's is a bit more hidden, however and required a search.
      
