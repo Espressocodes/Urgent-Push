@@ -1,5 +1,6 @@
 { 
     "directory" : "C:/FILELOCATION/FILESUBLOCATION/DEEPERFOLDER",
+    "use_oauth2" : False,
     "client_id" : "OAUTH2 CLIENT ID",
     "client_secret" : "OAUTH2 CLIENT SECRET",
     "token_url" : "OAUTH2 TOKEN URL",
