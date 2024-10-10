@@ -106,6 +106,21 @@ def send_email(sender, recipient, subject, body, use_oauth2):
     except Exception as e:
         print(f"An error occurred while sending the email: {e}")
 
+# Path to log file
+log_file = os.path.join(directory, 'processed_files_log.txt') #THIS LOG FILE NAME CAN BE CHANGED. THIS IS TO TRACK WHAT HAS ALREADY SENT.
+
+# Load processed files from log file
+def load_processed_files(log_file):
+    if os.path.exists(log_file):
+        with open(log_file, 'r') as f:
+            return set(f.read().splitlines())
+    return set()
+
+# Save processed files to log file
+def save_processed_files(log_file, processed_files):
+    with open(log_file, 'w') as f:
+        f.write('\n'.join(processed_files))
+        
 if __name__ == "__main__":
     bundle_dir = Path(__file__).parent.resolve()
     exec_dir = bundle_dir
@@ -129,23 +144,8 @@ if __name__ == "__main__":
     processed_files = set()
 
     # Toggleable OAuth2
-    use_oauth2 = False  ## CHANGE THIS TO TRUE IF USING OAUTH2 ##
-
-# Path to log file
-log_file = os.path.join(directory, 'processed_files_log.txt') #THIS LOG FILE NAME CAN BE CHANGED. THIS IS TO TRACK WHAT HAS ALREADY SENT.
-
-# Load processed files from log file
-def load_processed_files(log_file):
-    if os.path.exists(log_file):
-        with open(log_file, 'r') as f:
-            return set(f.read().splitlines())
-    return set()
-
-# Save processed files to log file
-def save_processed_files(log_file, processed_files):
-    with open(log_file, 'w') as f:
-        f.write('\n'.join(processed_files))
-
+    use_oauth2 = config.get("use_oauth2") 
+    
 # Load processed files from log
 processed_files = load_processed_files(log_file)
 
